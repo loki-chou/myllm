@@ -41,19 +41,19 @@ set_random_seed(TORCH_SEED)
 encoding = tiktoken.get_encoding("cl100k_base")
 
 # 从训练好的模型中初始化
-model = safe_load_model('model/myllm2.pt', device)
+model = safe_load_model('model/model-scifi-finetune.pt', device)
 model.eval()
 model.to(device)
 
 # 定义开始的字符串
-start = '黄强大笑一声'
+start = '帮我写一本小说，主角是黄强'
 start_ids = encoding.encode(start)
 # 修正了变量名的拼写错误
 start_tensor = torch.tensor(start_ids, dtype=torch.long, device=device)[None, ...]
 
 # 运行生成
 with torch.no_grad():
-    y = model.generate(start_tensor, 500)  # 假设generate函数接受start_tensor作为输入
+    y = model.generate(start_tensor)  # 假设generate函数接受start_tensor作为输入
     print('---------------')
     print(encoding.decode(y[0].tolist()))
     print('---------------')
